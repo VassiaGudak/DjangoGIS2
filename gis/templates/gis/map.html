@@ -1,7 +1,7 @@
 {% extends 'gis/base.html' %}
 
 {% block title %}
-   ArcGis Online on localhost
+    ArgGis Online on localhost
 {% endblock %}
 
 {%  block maphead %}
@@ -14,8 +14,9 @@ require([
   "esri/Map",
   "esri/views/MapView",
   "esri/widgets/Home",
-  "esri/widgets/Compass"
-], function(Map, MapView, Home, Compass){
+  "esri/widgets/Compass",
+  "esri/widgets/Directions"
+], function(Map, MapView, Home,Compass,Directions){
   var map = new Map({
     basemap: "streets"
   });
@@ -26,19 +27,34 @@ require([
     center: [30.540364,50.445836]  // Sets center point of view using longitude,latitude
   });
   var homeBtn = new Home({
-    view: view
+      view: view
   });
-  // Add the home button to the top left corner of the view
-  view.ui.add(homeBtn, "top-left");
+   // Add the home button to the top left corner of the view
+    view.ui.add(homeBtn, "top-left");
 
-  var compassWidget = new Compass({
-    view: view
-  });
-  // Add the Compass widget to the top left corner of the view
-  view.ui.add(compassWidget, "top-right");
-    });
+   var compassWidget = new Compass({
+       view: view
+   });
+   // Add the Compass widget to the top left corner of the view
+    view.ui.add(compassWidget, "top-right");
+
+    var directionsWidget = new Directions({
+          view: view,
+          // Point the URL to a valid route service that uses an
+          // ArcGIS Online hosted service proxy instead of the default service
+          routeServiceUrl:
+            "https://utility.arcgis.com/usrsvcs/appservices/srsKxBIxJZB0pTZ0/rest/services/World/Route/NAServer/Route_World"
+        });
+
+        // Add the Directions widget to the top right corner of the view
+        view.ui.add(directionsWidget, {
+          position: "bottom-right"
+        });
+});
+
+
 </script>
-{% endblock %}
+{% endblock  %}
 
 {% block content %}
     <div id="viewDiv" style="height: 700px !important"></div>
